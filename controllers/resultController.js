@@ -4,13 +4,12 @@ var ResultRepository = require('../repositories/resultRepository');
 
 exports.getAllResults = function (req, res) {
     console.log('Controller reached');
-    var promise = ResultRepository.getAllResults();
-    promise.then(function (results) {
-        console.log('Should return results now');
+    ResultRepository.getAllResults(function (err, results) {
+        if(err){
+            return res.status(500).json({success: false, msg: 'Failed to get results', error: err});
+        }
         return res.status(200).json(results);
-    }, function (err) {
-        console.log('Should return error');
-        return res.status(500).json({success: false, msg: 'Failed to get results', error: err});
+
     });
 };
 

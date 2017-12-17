@@ -3,9 +3,9 @@
 var mongoose = require('mongoose');
 var Result = mongoose.model('Result');
 
-exports.getAllResults = function () {
+exports.getAllResults = function (callback) {
     console.log('Repository reached');
-    return Result.find({});
+    return Result.find({}, callback);
 };
 
 exports.getResultsByUserId = function (req) {
