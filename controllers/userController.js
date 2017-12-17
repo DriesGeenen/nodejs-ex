@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 exports.getAllUsers = function (req, res) {
     var promise = UserRepository.getAllUsers(req);
     promise.then(function (users) {
-        return res.json(users);
+        return res.status(200).json(users);
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to get users', error: err});
     });
@@ -19,7 +19,7 @@ exports.getAllUsers = function (req, res) {
 exports.getUserById = function (req, res) {
     var promise = UserRepository.getUserById(req);
     promise.then(function (result) {
-        return res.json(result);
+        return res.status(200).json(result);
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to get result', error: err});
     });
@@ -28,7 +28,7 @@ exports.getUserById = function (req, res) {
 exports.deleteUser = function (req, res) {
     var promise = UserRepository.deleteUser(req);
     promise.then(function () {
-        return res.json({success: true, msg: 'User removed'});
+        return res.status(200).json({success: true, msg: 'User removed'});
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to remove result', error: err});
     });
@@ -50,7 +50,7 @@ exports.registerUser = function (req, res) {
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to create user', error: err});
     }).then(function () {
-        return res.json({success: true, msg: 'User created'});
+        return res.status(200).json({success: true, msg: 'User created'});
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to create user', error: err});
     });
@@ -75,7 +75,7 @@ exports.authenticateUser = function (req, res) {
             const token = jwt.sign({data: user}, config.secret, {
                 expiresIn: 604800
             });
-            return res.json({
+            return res.status(200).json({
                 success: true,
                 token: 'JWT ' + token,
                 user: user
@@ -91,13 +91,13 @@ exports.authenticateUser = function (req, res) {
 
 exports.getProfile = function (req, res) {
 
-    return res.json({user: req.user.data})
+    return res.status(200).json({user: req.user.data})
 };
 
 exports.getUsersByLogo = function(req, res) {
     var promise = UserRepository.getUsersByLogo(req);
     promise.then(function (result) {
-        return res.json(result);
+        return res.status(200).json(result);
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to get users', error: err});
     });
