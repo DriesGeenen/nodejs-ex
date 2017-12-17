@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var Result = mongoose.model('Result');
 
 exports.getAllResults = function () {
+    console.log('Repository reached');
     return Result.find({});
 };
 
