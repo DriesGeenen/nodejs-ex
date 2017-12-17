@@ -7,14 +7,14 @@ var Result = mongoose.model('Result');
 exports.getAllResults = function (req, res) {
     console.log('Controller reached');
     Result.find({}, (function (err, results) {
-        if(err){
+        if (err) {
             console.log("Should return error");
             return res.status(500).json({success: false, msg: 'Failed to get results', error: err});
         }
         console.log('Should return now');
         return res.status(200).json(results);
 
-    });
+    }));
 };
 
 exports.getResultsByUserId = function (req, res) {
