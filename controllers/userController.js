@@ -13,7 +13,6 @@ exports.getAllUsers = function (req, res) {
     }, function (err) {
         return res.status(500).json({success: false, msg: 'Failed to get users', error: err});
     });
-    console.log('getAll: ' + JSON.stringify(req.user.data));
 };
 
 exports.getUserById = function (req, res) {
