@@ -5,6 +5,25 @@ module.exports = function (app) {
     var AuthHelper = require('../helpers/authHelper');
 
     app.route('/users/profile')
+        .get(UserController.getProfile);
+
+    app.route('/users')
+        .get(UserController.getAllUsers);
+
+    app.route('/users/:id')
+        .get(UserController.getUserById)
+        .delete(UserController.deleteUser);
+
+    app.route('/users/register')
+        .post(UserController.registerUser);
+
+    app.route('/users/authenticate')
+        .post(UserController.authenticateUser);
+
+    app.route('/logopedist/:logopedist/users')
+        .get(UserController.getUsersByLogo);
+
+    /*app.route('/users/profile')
         .get(AuthHelper.loginRequired, UserController.getProfile);
 
     app.route('/users')
@@ -15,11 +34,11 @@ module.exports = function (app) {
         .delete(AuthHelper.logoRequired, UserController.deleteUser);
 
     app.route('/users/register')
-        .post(UserController.registerUser);
+        .post(AuthHelper.logoRequired, UserController.registerUser);
 
     app.route('/users/authenticate')
         .post(UserController.authenticateUser);
 
     app.route('/logopedist/:logopedist/users')
-        .get(UserController.getUsersByLogo);
+        .get(UserController.getUsersByLogo);*/
 };
