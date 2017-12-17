@@ -2,6 +2,19 @@
 var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const passport = require('passport');
+const mongoose = require('mongoose');
+const config = require('./config/database');
+var router = express.Router();
+const Result = require('./models/result'); //created model loading here
+const User = require('./models/user');
+const userRoutes = require('./routes/userRoutes');
+const roomRoutes = require('./routes/resultRoutes');
+const jsonwebtoken = require("jsonwebtoken");
+require('./config/passport')(passport);
     
 Object.assign=require('object-assign')
 
@@ -101,6 +114,29 @@ app.use(function(err, req, res, next){
 initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
 });
+
+app.use(function (req, res, next) {
+    if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT') {
+        jsonwebtoken.verify(req.headers.authorization.split(' ')[1], config.secret, function (err, decode) {
+            if (err) req.user = undefined;
+            req.user = decode;
+            console.log('decode:' + JSON.stringify(req.user));
+            next();
+        });
+    } else {
+        req.user = undefined;
+        next();
+    }
+});
+
+app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
+userRoutes(app);
+roomRoutes(app);
 
 app.listen(port, ip);
 console.log('Server running on http://%s:%s', ip, port);
